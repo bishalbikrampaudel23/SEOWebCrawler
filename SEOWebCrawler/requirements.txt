@@ -1,0 +1,5 @@
+beautifulsoup4>=4.13,<5
+Flask>=3.1,<4
+nltk>=3.9,<4
+PyYAML>=6,<7
+requests>=2.32.4,<3

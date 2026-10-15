@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEO Fieldnotes</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js" defer></script>
+  <script src="{{ url_for('static', filename='dashboard.js') }}" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">SEO <span>FIELDNOTES</span></a>
+    <span class="status"><i></i> Crawler ready</span>
+  </header>
+  <main>
+    <section class="scan-band">
+      <div class="scan-copy">
+        <p class="eyebrow">SEO / NEW CRAWL</p>
+        <h1>New site<br>audit</h1>
+      </div>
+      <form id="scan-form" class="scan-form">
+        <label for="site-url">Website URL</label>
+        <div class="form-row">
+          <input id="site-url" name="url" type="url" placeholder="https://example.com" required>
+          <button type="submit"><span>Run audit</span><b aria-hidden="true">↗</b></button>
+        </div>
+        <p id="scan-message" role="status">HTTPS sites only. Crawl limits follow server configuration.</p>
+      </form>
+    </section>
+    <section id="report" class="report" hidden>
+      <div class="report-head">
+        <div><p class="eyebrow">AUDIT SUMMARY</p><h2 id="report-url"></h2></div>
+        <a id="csv-link" class="export-link" hidden>Download CSV <span>↓</span></a>
+      </div>
+      <div class="score-strip">
+        <div class="score-block"><span>SEO SCORE</span><strong id="score">--</strong><small>out of 100</small></div>
+        <div class="metric"><span>Pages scanned</span><strong id="page-count">0</strong></div>
+        <div class="metric"><span>Broken links</span><strong id="broken-count">0</strong></div>
+        <div class="metric"><span>Images missing alt</span><strong id="alt-count">0</strong></div>
+      </div>
+      <div class="chart-grid">
+        <section class="chart-panel"><div class="panel-title"><h3>Keyword frequency</h3><span>STEMMED TERMS</span></div><div class="chart-frame"><canvas id="keyword-chart" aria-label="Keyword frequency bar chart"></canvas></div></section>
+        <section class="chart-panel"><div class="panel-title"><h3>Page scores</h3><span>PER URL</span></div><div class="chart-frame"><canvas id="page-chart" aria-label="Page SEO score chart"></canvas></div></section>
+      </div>
+      <div class="report-lists">
+        <section class="table-panel">
+          <div class="panel-title"><h3>Keyword frequency</h3><span>TOP 20 / STEMMED</span></div>
+          <div class="table-scroll"><table><thead><tr><th>Keyword</th><th>Count</th><th>Density</th></tr></thead><tbody id="keywords-body"></tbody></table></div>
+        </section>
+        <section class="table-panel">
+          <div class="panel-title"><h3>External links</h3><span>OUTBOUND INVENTORY</span></div>
+          <div class="table-scroll"><table><thead><tr><th>Target</th><th>Source pages</th><th>Check</th></tr></thead><tbody id="external-body"></tbody></table></div>
+        </section>
+      </div>
+      <section class="table-panel">
+        <div class="panel-title"><h3>Page inventory</h3><span id="generated-at"></span></div>
+        <div class="table-scroll"><table><thead><tr><th>Page</th><th>Status</th><th>Score</th><th>Title</th><th>Links</th></tr></thead><tbody id="pages-body"></tbody></table></div>
+      </section>
+      <section class="table-panel link-panel">
+        <div class="panel-title"><h3>Broken links</h3><span>HTTP 4XX / 5XX</span></div>
+        <div class="table-scroll"><table><thead><tr><th>Target</th><th>Source page</th><th>Status</th></tr></thead><tbody id="broken-body"></tbody></table></div>
+      </section>
+    </section>
+  </main>
+  <footer><span>SEO FIELDNOTES</span><span>Robots-aware · bounded · certificate-verified</span></footer>
+</body>
+</html>
