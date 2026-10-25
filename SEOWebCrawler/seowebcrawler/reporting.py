@@ -9,6 +9,13 @@ import json
 from .models import SiteReport
 
 
+def _safe_csv_cell(value: object) -> object:
+    """Prefix formula-leading text so spreadsheet applications treat it as text."""
+    if isinstance(value, str) and value.lstrip()[:1] in {"=", "+", "-", "@"}:
+        return "'" + value
+    return value
+
+
 def to_json(report: SiteReport) -> str:
     """Serialize a site report as readable JSON."""
     return json.dumps(report.to_dict(), indent=2, ensure_ascii=False)
@@ -32,5 +39,7 @@ def to_csv(report: SiteReport) -> str:
             "external_links", "broken_links", "headings",
         ):
             row[key] = json.dumps(row[key], ensure_ascii=False)
-        writer.writerow({key: row.get(key, "") for key in fields})
+        writer.writerow(
+            {key: _safe_csv_cell(row.get(key, "")) for key in fields}
+        )
     return output.getvalue()

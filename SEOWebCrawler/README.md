@@ -91,6 +91,7 @@ The image runs as a non-root user. Access the dashboard at `http://127.0.0.1:800
 - Robots.txt is cached per origin for one crawl; an unavailable/forbidden robots file blocks crawling. Link checks are capped, paced, and robots-aware.
 - Timeouts, retries, depth/page limits, response-byte limits, redirect limits, and worker caps limit resource use. These limits do not protect against every hostile origin or parser-level denial of service; run in a resource-limited container.
 - The dashboard does not execute shell commands, evaluate input, or write crawl-derived paths. Its HTTP API is unauthenticated and should only be exposed locally or behind authentication.
+- CSV exports prefix spreadsheet-formula-leading text with an apostrophe to prevent crawled content from being evaluated as a formula.
 - Use only on sites you own or have permission to analyze. Comply with site terms, applicable law, and robots policy.
 
 ## Heuristic score

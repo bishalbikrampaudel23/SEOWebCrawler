@@ -28,6 +28,20 @@ class ReportingTests(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["title"], 'A, quoted "title"')
 
+    def test_csv_neutralizes_spreadsheet_formulas_in_untrusted_fields(self):
+        page = analyze_page(
+            "https://example.com/",
+            200,
+            '<title>=HYPERLINK("https://attacker.example/","open")</title>',
+        )
+        page.meta_description = "  +SUM(1,1)"
+        report = SiteReport("https://example.com/", [page], {})
+
+        rows = list(csv.DictReader(io.StringIO(to_csv(report))))
+
+        self.assertEqual(rows[0]["title"], '\'=HYPERLINK("https://attacker.example/","open")')
+        self.assertEqual(rows[0]["meta_description"], "'  +SUM(1,1)")
+
 
 if __name__ == "__main__":
     unittest.main()
